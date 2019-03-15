@@ -1,0 +1,155 @@
+<!DOCTYPE>
+<html>
+    <head>
+        <title>Form data</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="https://fonts.googleapis.com/css?family=Archivo" rel="stylesheet">
+        <link rel="stylesheet" href="global-style.css">
+    </head>
+
+    <body>
+        <div id="user-table">
+            <div id="user-table-header"></div>
+            <div id="user-table-body"></div>
+        </div>
+        
+        <template id="user-list-template-header">
+            <div class="company-name"></div>
+            <div id="wrapper">
+                <div id="small-wrapper">
+                    <div class="header-title">Team</div>
+                    <div id="avatar-and-members">
+                        <div id="avatar" class="svg-bubble">
+                            <svg width="15px" height="15px" viewBox="0 0 22 22" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                                <!-- Generator: Sketch 52.5 (67469) - http://www.bohemiancoding.com/sketch -->
+                                <title> Icons / Basic / Man</title>
+                                <desc>Created with Sketch.</desc>
+                                <defs>
+                                    <path d="M8.6938,12.008 C5.5224,12.167 3,14.789 3,18 C3,19.105 3.8954,20 5,20 L17,20 C18.1046,20 19,19.105 19,18 C19,14.789 16.4776,12.167 13.3062,12.008 C13.2048,12.003 13.1027,12 13,12 L9,12 C8.8973,12 8.7952,12.003 8.6938,12.008 Z M8.3542,10 C9.0593,10.622 9.9856,11 11,11 C12.0144,11 12.9407,10.622 13.6458,10 C14.4762,9.267 15,8.195 15,7 C15,4.791 13.2091,3 11,3 C8.7909,3 7,4.791 7,7 C7,8.195 7.5238,9.267 8.3542,10 Z M16.5,18 C16.7761,18 17,17.776 17,17.5 L17,17 C17,14.791 15.2091,14 13,14 L9,14 C6.7909,14 5,14.791 5,17 L5,17.5 C5,17.776 5.2239,18 5.5,18 L16.5,18 Z M11,9 C12.1046,9 13,8.105 13,7 C13,5.895 12.1046,5 11,5 C9.8954,5 9,5.895 9,7 C9,8.105 9.8954,9 11,9 Z" id="path-1"></path>
+                                </defs>
+                                <g id="-Icons-/-Basic-/-Man" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                    <mask id="mask-2" fill="white">
+                                        <use xlink:href="#path-1"></use>
+                                    </mask>
+                                    <use id="Icon" fill="#475F7B" xlink:href="#path-1"></use>
+                                </g>
+                            </svg>
+                                                    </div>
+                        <div id="number-of-user"></div>
+                    </div>
+                </div>
+                <div id="add-user">
+                    <svg width="20px" height="20px" viewBox="0 0 22 22" xmlns:xlink="http://www.w3.org/1999/xlink">
+                        <path d="M13,13 L13,17 C13,17.5522847 12.5522847,18 12,18 L11,18 C10.4477153,18 10,17.5522847 10,17 L10,13 L6,13 C5.44771525,13 5,12.5522847 5,12 L5,11 C5,10.4477153 5.44771525,10 6,10 L10,10 L10,6 C10,5.44771525 10.4477153,5 11,5 L12,5 C12.5522847,5 13,5.44771525 13,6 L13,10 L17,10 C17.5522847,10 18,10.4477153 18,11 L18,12 C18,12.5522847 17.5522847,13 17,13 L13,13 Z" id="path-1" fill="#304156"></path>
+                    </svg>
+                </div>
+            </div>
+        </template>
+        
+        <template id="user-list-template-body">
+            <div class="body-container">
+                <div class="template-first-child"></div>
+                <div class="template-second-child"></div>
+                <div class="template-third-child"></div>
+            </div>
+        </template>
+        
+        <template id="create-user-template-header">
+            <div class="company-name"></div>
+            <div id="create-user-label" class="header-title">Create User</div>
+        </template>
+        
+        <template id="create-user-template-body">
+            <form class="create-user-form">
+                <label for="fullname">Full Name</label>
+                <input type="text" id="fullname" required>
+                <label for="email">Email</label>
+                <input type="email" id="email" required>
+                <label for="position">Position</label>
+                <input type="text" id="position" required>
+                <div class="button-area">
+                    <button class="cancel-button">Cancel</button>
+                    <button id="create-button">Create</button>
+                </div>
+            </form>
+        </template>
+        
+        <template id="view-user-template-header">
+            <div id="upper-wrapper">
+                <div id="left-arrow" class="svg-bubble">
+                    <svg width="20px" height="20px" viewBox="0 0 22 22" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                        <title> Icons / Arrows / Arrow left</title>
+                        <desc>Created with Sketch.</desc>
+                        <defs>
+                            <path d="M11,7 L5.705,12.0020243 C5.33718283,12.3494899 5.32068463,12.9293412 5.66815025,13.2971583 C5.68008159,13.3097885 5.69236982,13.3220767 5.705,13.3340081 L5.72403849,13.3519932 C6.10914965,13.7157959 6.71115958,13.7161236 7.09666658,13.3527403 L11,9.6734143 L14.9033334,13.3527403 C15.2888404,13.7161236 15.8908504,13.7157959 16.2759615,13.3519932 L16.295,13.3340081 C16.6628172,12.9865425 16.6793154,12.4066912 16.3318498,12.038874 C16.3199184,12.0262439 16.3076302,12.0139556 16.295,12.0020243 L11,7 Z" id="path-1"></path>
+                        </defs>
+                        <g id="-Icons-/-Arrows-/-Arrow-left" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                            <mask id="mask-2" fill="white">
+                                <use xlink:href="#path-1"></use>
+                            </mask>
+                            <use id="Shape" fill="#475F7B" transform="translate(11.050000, 10.735875) rotate(-90.000000) translate(-11.050000, -10.735875) " xlink:href="#path-1"></use>
+                        </g>
+                    </svg>
+                </div>
+                <div class="company-name"></div>
+            </div>    
+            <div id="lower-wrapper">
+                <div class="header-title">Username</div>
+                <div id="edit-user">
+                    <div id="modify-user" class="svg-bubble">
+                        <svg width="15px" height="15px" viewBox="0 0 22 22" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink">
+                            <path d="M17.6411,9.08625 C18.017,9.47725 18.0121,10.10025 17.6265,10.48525 L9.6523,18.39125 L4.6915,18.39125 C4.4228,18.40725 4.0697,18.02925 4.0553,17.77025 L4,12.84425 L11.9697,4.82825 C12.3602,4.43825 12.9934,4.43825 13.3839,4.82825 L13.3986,4.84325 L13.9488,4.29325 C14.3394,3.90225 14.9725,3.90225 15.3631,4.29325 L18.1915,7.12125 C18.582,7.51225 18.582,8.14525 18.1915,8.53625 L17.6411,9.08625 Z M6.3128,13.31425 L9.1412,16.14225 L15.5052,9.77825 L12.6768,6.95025 L6.3128,13.31425 Z" id="path-1" fill="#304156"></path>
+                        </svg>
+                    </div>
+                    <div id="delete-user" class="svg-bubble">
+                        <svg width="15px" height="15px" viewBox="0 0 22 22" xmlns:xlink="http://www.w3.org/1999/xlink">
+                            <g id="-Icons-/-Basic-/-Trash" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                <path d="M8,5 L8,4 C8,2.895 8.895,2 10,2 L12,2 C13.105,2 14,2.895 14,4 L14,5 L18,5 C18.552,5 19,5.448 19,6 C19,6.552 18.552,7 18,7 L18,17 C18,18.657 16.657,20 15,20 L7,20 C5.343,20 4,18.657 4,17 L4,7 C3.448,7 3,6.552 3,6 C3,5.448 3.448,5 4,5 L8,5 Z M10,5 L12,5 L12,4 L10,4 L10,5 Z M6,7 L6,17 C6,17.552 6.448,18 7,18 L15,18 C15.552,18 16,17.552 16,17 L16,7 L6,7 Z" id="Icon" fill="#ff3399"></path>
+                            </g>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+        </template>
+        
+        <template id="view-user-template-body">
+            <div class="body-container">
+                <div class="template-first-child"></div>
+                <div class="template-second-child specific-style"></div>
+                <div class="template-third-child" id="view-user-template-body-third-child">
+                    <div class="title">Logs</div>
+                    <div class="log-container"></div>
+                </div>
+            </div>
+        </template>
+        
+        <template id="delete-user-template">
+            <div class="delete-user-body-container">
+                <div class="title-and-message-wrapper">
+                    <div id="delete-user-wrapper">
+                        <div id="delete-title" class="header-title">Delete Username</div>
+                        <div id="cross-button">
+                            <svg width="10px" height="10px" viewBox="0 0 22 22" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                                <g id="-Icons-/-Basic-/-Close" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                    <path d="M16.97025,5.70725 C17.36125,5.31725 17.36125,4.68325 16.97025,4.29325 C16.58025,3.90225 15.94725,3.90225 15.55625,4.29325 L10.63225,9.21725 L5.70725,4.29325 C5.31725,3.90225 4.68325,3.90225 4.29325,4.29325 C3.90225,4.68325 3.90225,5.31725 4.29325,5.70725 L9.21725,10.63225 L4.29325,15.55625 C3.90225,15.94725 3.90225,16.58025 4.29325,16.97025 C4.68325,17.36125 5.31725,17.36125 5.70725,16.97025 L10.63225,12.04625 L15.55625,16.97025 C15.94725,17.36125 16.58025,17.36125 16.97025,16.97025 C17.36125,16.58025 17.36125,15.94725 16.97025,15.55625 L12.04625,10.63225 L16.97025,5.70725 Z" id="Icon" fill="#475F7B"></path>
+                                </g>
+                            </svg>
+                        </div>
+                    </div>
+                    <div id="warning-message">Are you sure you want to delete this user?<br>This action is irreversible.</div>
+                </div>
+                <div class="button-area">
+                    <button class="cancel-button">Cancel</button>
+                    <button id="delete-button">Delete</button>
+                </div>
+            </div>
+        </template>
+        
+        <template id="wrapper-screen-template">
+            <div id="wrapper-screen"></div>
+        </template>
+        
+        <script src="demo.js"></script>
+    </body>
+</html>
