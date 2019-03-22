@@ -16,11 +16,15 @@ var counter = 0;
  * Requests the users list to the server.
  */
 function requestUsers(){
+    history.pushState({key: "userList"}, null, null);
     const $$companyPromise = fetch(`${SERVER_URL}/company/current`, {
         method: 'GET'
         })
     .then(response => {
         return response.json();
+        })
+    .catch(error => {
+        return error;
         });
     
     $$companyPromise
@@ -30,6 +34,9 @@ function requestUsers(){
             })
         .then(response => {
             return response.json();
+            })
+        .catch(error => {
+            return error;
             });
             
         $$userPromise
@@ -42,6 +49,9 @@ function requestUsers(){
                     })
                 .then(response => {
                     return response.json();
+                    })
+                .catch(error => {
+                    return error;
                     });
                         
                 $$userStatusPromise
@@ -59,9 +69,15 @@ function requestUsers(){
 
                         goToViewUserScreen(company.name, uniqueUser[user.ID].ID, counter, userArray.length, userStatus.status);
                         counter++;
+                        })
+                    .catch(error => {
+                        console.log("Something went wrong");
                         });
                     });                       
                 });
+            })
+        .catch(error => {
+            console.log("Something went wrong");
             });
         });
 }
@@ -69,16 +85,16 @@ function requestUsers(){
 /**
  * Goes to the Team/View screen.
  *
- * @argument companyName {String}
- * @argument userID {String}
- * @argument counter {Number}
- * @argument numberOfUser {Number}
- * @argument userStatus {Boolean}
+ * @argument {String} companyName
+ * @argument {String} userID
+ * @argument {Number} counter
+ * @argument {Number} numberOfUser
+ * @argument {Boolean} userStatus
  */
 function goToViewUserScreen(companyName, userID, counter, numberOfUser, userStatus){
         const $$viewUserButton = document.getElementById(`btn${counter}`);
         $$viewUserButton.addEventListener("click", () => {
-            history.pushState({key: "viewUser"}, "titre", null);
+            history.pushState({key: "viewUser"}, null, null);
             var tmpHeaderUpWrapper = [...$$userTableHeader.children][0];
             var tmpHeaderLowWrapper = [...$$userTableHeader.children][1];
             var tmpBody = [...$$userTableBody.children];
@@ -99,7 +115,10 @@ function goToViewUserScreen(companyName, userID, counter, numberOfUser, userStat
                 })
             .then(response => {
                 return response.json();
-            });
+            })
+            .catch(error => {
+                return error;
+                });
             
             $$getUserInfoPromise
             .then(user => {
@@ -125,8 +144,11 @@ function goToViewUserScreen(companyName, userID, counter, numberOfUser, userStat
                     })
                 .then(response =>  {
                     return response.json();
+                    })
+                .catch(error => {
+                    return error;
                     });
-                
+                        
                 $$userLogsPromise
                 .then(logList => {
                     logList.logList.map(log => {
@@ -134,11 +156,17 @@ function goToViewUserScreen(companyName, userID, counter, numberOfUser, userStat
                         logChild.textContent = log;
                         $$logContainer.appendChild(logChild);
                         });
+                    })
+                .catch(error => {
+                    return error;
                     });
+                })
+            .catch(error => {
+                console.log("Something went wrong");
                 });
                
             window.onpopstate = function(event){
-                if (event.state == null){
+                if (JSON.stringify(event.state) == JSON.stringify({key: "userList"})){
                     removeAllChildren($$userTableHeader);
                     removeAllChildren($$userTableBody);
                     $$userTableHeader.appendChild(tmpHeaderUpWrapper);
@@ -159,11 +187,11 @@ function goToViewUserScreen(companyName, userID, counter, numberOfUser, userStat
 /**
  * Goes to the Team/Delete screen.
  *
- * @argument fullName {String}
- * @argument position {String}
- * @argument email {String}
- * @argument companyName {String}
- * @argument numberOfUser {Number}
+ * @argument {String} fullName
+ * @argument {String} position
+ * @argument {String} email
+ * @argument {String} companyName
+ * @argument {Number} numberOfUser
  */
 function goToDeleteUserScreen(fullName, position, email, ID, companyName, numberOfUser){
     const $$deleteUserButton = document.querySelector("#delete-user");
@@ -172,9 +200,6 @@ function goToDeleteUserScreen(fullName, position, email, ID, companyName, number
         var $$cloneDeleteUserTemplate = document.importNode($$deleteUserTemplate.content, true);
         $$body.appendChild($$cloneWrapperScreenTemplate);
         $$body.appendChild($$cloneDeleteUserTemplate);
-        const $$userTableHeaderUpperWrapper = document.querySelector("#upper-wrapper");
-        const $$leftArrow = document.querySelector("#left-arrow");
-        $$userTableHeaderUpperWrapper.removeChild($$leftArrow);
         const $$fullName = document.querySelector("#delete-title");
         const $$deleteUserButton = document.querySelector("#delete-button");
         const $$cancelButton = document.querySelector(".cancel-button");
@@ -212,29 +237,6 @@ function goToDeleteUserScreen(fullName, position, email, ID, companyName, number
         function handleEventCancelUserDeletion(){
             $$body.removeChild($$wrapperScreen);
             $$body.removeChild($$deleteUserBodyContainer);
-            const $$leftArrow = document.createElement("div");
-            $$leftArrow.id = "left-arrow";
-            $$leftArrow.classList.add("svg-bubble");
-            $$leftArrow.innerHTML = `
-                <svg width="20px" height="20px" viewBox="0 0 22 22" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-                    <title> Icons / Arrows / Arrow left</title>
-                    <desc>Created with Sketch.</desc>
-                    <defs>
-                        <path d="M11,7 L5.705,12.0020243 C5.33718283,12.3494899 5.32068463,12.9293412 5.66815025,13.2971583 C5.68008159,13.3097885 5.69236982,13.3220767 5.705,13.3340081 L5.72403849,13.3519932 C6.10914965,13.7157959 6.71115958,13.7161236 7.09666658,13.3527403 L11,9.6734143 L14.9033334,13.3527403 C15.2888404,13.7161236 15.8908504,13.7157959 16.2759615,13.3519932 L16.295,13.3340081 C16.6628172,12.9865425 16.6793154,12.4066912 16.3318498,12.038874 C16.3199184,12.0262439 16.3076302,12.0139556 16.295,12.0020243 L11,7 Z" id="path-1"></path>
-                    </defs>
-                    <g id="-Icons-/-Arrows-/-Arrow-left" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                        <mask id="mask-2" fill="white">
-                            <use xlink:href="#path-1"></use>
-                        </mask>
-                        <use id="Shape" fill="#475F7B" transform="translate(11.050000, 10.735875) rotate(-90.000000) translate(-11.050000, -10.735875) " xlink:href="#path-1"></use>
-                    </g>
-                </svg>`;
-            $$userTableHeaderUpperWrapper.insertBefore($$leftArrow, $$userTableHeaderUpperWrapper.childNodes[0]);
-            $$leftArrow.addEventListener("click", () => {
-                removeAllChildren($$userTableHeader);
-                removeAllChildren($$userTableBody);
-                requestUsers();
-                });
         }
         });
 }
@@ -242,16 +244,16 @@ function goToDeleteUserScreen(fullName, position, email, ID, companyName, number
 /**
  * Goes to the Team/Edit screen.
  *
- * @argument companyName {String}
- * @argument fullName {String}
- * @argument position {String}
- * @argument email {String}
- * @argument ID {String}
+ * @argument {String} companyName
+ * @argument {String} fullName
+ * @argument {String} position
+ * @argument {String} email
+ * @argument {String} ID
  */
 function goToEditUserScreen(companyName, fullName, position, email, ID){
     const $$editUserButton = document.querySelector("#modify-user");
     $$editUserButton.addEventListener("click", () => {
-        history.pushState({key: "editUser"}, "titre", null);
+        history.pushState({key: "editUser"}, null, null);
         var tmpHeaderUpWrapper = [...$$userTableHeader.children][0];
         var tmpHeaderLowWrapper = [...$$userTableHeader.children][1];
         var tmpBody = [...$$userTableBody.children];  
@@ -261,12 +263,13 @@ function goToEditUserScreen(companyName, fullName, position, email, ID){
         var $$cloneEditUserTemplateBody = document.importNode($$createUserTemplateBody.content, true);
         $$userTableHeader.appendChild($$cloneEditUserTemplateHeader);
         $$userTableBody.appendChild($$cloneEditUserTemplateBody);
-        const $$companyName = document.querySelector(".company-name");
-        const $$fullName = document.querySelector(".header-title");
         
+        const $$companyName = document.querySelector(".company-name");
+        const $$fullName = document.querySelector(".header-title");        
         const $$fullNameInputField = document.querySelector("#fullname");
         const $$emailInputField = document.querySelector("#email");
-        const $$positionInputField = document.querySelector("#position");       
+        const $$positionInputField = document.querySelector("#position");
+        
         $$fullNameInputField.addEventListener("change", fullNameValueChanged);
         $$emailInputField.addEventListener("change", emailValueChanged);
         $$positionInputField.addEventListener("change", positionValueChanged);
@@ -306,7 +309,7 @@ function goToEditUserScreen(companyName, fullName, position, email, ID){
             });
     
         window.onpopstate = function(event){
-            if (event.state == null){
+            if (JSON.stringify(event.state) == JSON.stringify({key: "viewUser"})){
                 removeAllChildren($$userTableHeader);
                 removeAllChildren($$userTableBody);
                 $$userTableHeader.appendChild(tmpHeaderUpWrapper);
@@ -328,13 +331,13 @@ function goToEditUserScreen(companyName, fullName, position, email, ID){
 /**
  * Goes to the Team/Create screen.
  *
- * @argument companyName {String}
+ * @argument {String} companyName
  */
 function goToCreateUserScreen(companyName){
     const $$plusSignButton = document.querySelector("#add-user");
     
     $$plusSignButton.addEventListener("click", () => {
-        window.history.pushState({key: 'createUser'}, 'titre', null);
+        window.history.pushState({key: "createUser"}, null, null);
         var tmpHeaderUpWrapper = [...$$userTableHeader.children][0];
         var tmpHeaderLowWrapper = [...$$userTableHeader.children][1];
         var tmpBody = [...$$userTableBody.children];
@@ -350,7 +353,7 @@ function goToCreateUserScreen(companyName){
         bindCreateUserScreenButtons();
 
         window.onpopstate = function(event){
-            if (event.state == null){
+            if (JSON.stringify(event.state) == JSON.stringify({key: "userList"})){
                 removeAllChildren($$userTableHeader);
                 removeAllChildren($$userTableBody);
                 $$userTableHeader.appendChild(tmpHeaderUpWrapper);
@@ -390,7 +393,7 @@ function bindCreateUserScreenButtons(){
 /**
  * Checks that the element has a valid format.
  *
- * @argument element {String}
+ * @argument {String} element
  */
 function formatIsValid(element){
     var validFormat = true;
@@ -406,7 +409,7 @@ function formatIsValid(element){
 /**
  * Checks that the email has a valid format.
  *
- * @argument email {String}
+ * @argument {String} email
  */
 function isUncomplete(email){
     var isUncomplete = false;
@@ -421,7 +424,7 @@ function isUncomplete(email){
 /**
  * Counts the number of white spaces.
  *
- * @argument element {String}
+ * @argument {String} element
  */
 function numberOfWhiteSpace(element){
     var count = 0;
@@ -436,7 +439,7 @@ function numberOfWhiteSpace(element){
 /**
  * Checks if there are several successive white spaces.
  *
- * @argument element {String}
+ * @argument {String} element
  */
 function severalSuccessiveWhiteSpaces(element){
     var severalSuccessiveWhiteSpaces = false;
@@ -454,9 +457,9 @@ function severalSuccessiveWhiteSpaces(element){
 /**
  * Checks that fields are not empty.
  *
- * @argument fullNameInputField {String}
- * @argument emailInputField {String}
- * @argument positionInputField {String}
+ * @argument {String} fullNameInputField
+ * @argument {String} emailInputField
+ * @argument {String} positionInputField
  */
 function checkInputFieldsNotEmpty(fullNameInputField, emailInputField, positionInputField){
     var allFieldsNotEmpty = true;
@@ -480,9 +483,9 @@ function checkInputFieldsNotEmpty(fullNameInputField, emailInputField, positionI
 /**
  * Checks that fields have a valid format.
  *
- * @argument fullNameInputField {String}
- * @argument emailInputField {String}
- * @argument positionInputField {String}
+ * @argument {String} fullNameInputField
+ * @argument {String} emailInputField
+ * @argument {String} positionInputField
  */
 function checkInputFieldsValidFormat(fullNameInputField, emailInputField, positionInputField){
     var formatsAreValid = true;
@@ -504,7 +507,7 @@ function checkInputFieldsValidFormat(fullNameInputField, emailInputField, positi
 /**
  * Changes the border color of the field if not valid.
  *
- * @argument event {Event}
+ * @argument {Event} event
  */
 function emailValueChanged(event){
     if (numberOfWhiteSpace(event.target.value.trim()) > 0 || !formatIsValid(event.target.value.trim())){
@@ -518,7 +521,7 @@ function emailValueChanged(event){
 /**
  * Changes the border color of the field if not valid.
  *
- * @argument event {Event}
+ * @argument {Event} event
  */
 function fullNameValueChanged(event){
     if (numberOfWhiteSpace(event.target.value.trim()) === 0 || severalSuccessiveWhiteSpaces(event.target.value.trim())){
@@ -532,7 +535,7 @@ function fullNameValueChanged(event){
 /**
  * Changes the border color of the field if not valid.
  *
- * @argument event {Event}
+ * @argument {Event} event
  */
 function positionValueChanged(event){
     if (severalSuccessiveWhiteSpaces(event.target.value.trim())){
@@ -546,7 +549,7 @@ function positionValueChanged(event){
 /**
  * Handles a user's creation.
  *
- * @argument event {Event}
+ * @argument {Event} event
  */
 function handleEventCreateUser(event){
     const $$fullNameInputField = document.querySelector("#fullname");
@@ -577,8 +580,8 @@ function handleEventCreateUser(event){
 /**
  * Populates the header of the user list.
  *
- * @argument companyName {String}
- * @argument numberOfUsers {Number}
+ * @argument {String} companyName
+ * @argument {Number} numberOfUsers
  */
 function populateUserListHeader(companyName, numberOfUsers){  
     var $$clone = document.importNode($$userListTemplateHeader.content, true);
@@ -592,10 +595,10 @@ function populateUserListHeader(companyName, numberOfUsers){
 /**
  * Populates the body of the user list.
  *
- * @argument status {String}
- * @argument fullName {String}
- * @argument email {String}
- * @argument counter {Number}
+ * @argument {String} status
+ * @argument {String} fullName
+ * @argument {String} email
+ * @argument {Number} counter
  */
 function populateUserListBody(status, fullName, email, counter){
     var $$clone = document.importNode($$userListTemplateBody.content, true);
@@ -619,7 +622,7 @@ function populateUserListBody(status, fullName, email, counter){
 /**
  * Removes the children from an element of the DOM.
  *
- * @argument element {HTMLElement}
+ * @argument {HTMLElement} element
  */
 function removeAllChildren(element){
     while (element.firstChild){
