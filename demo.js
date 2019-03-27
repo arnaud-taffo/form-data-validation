@@ -164,22 +164,12 @@ function goToViewUserScreen(companyName, userID, counter, numberOfUser, userStat
             .catch(error => {
                 console.log("Something went wrong");
                 });
-               
-            window.onpopstate = function(event){
-                if (JSON.stringify(event.state) == JSON.stringify({key: "userList"})){
-                    removeAllChildren($$userTableHeader);
-                    removeAllChildren($$userTableBody);
-                    $$userTableHeader.appendChild(tmpHeaderUpWrapper);
-                    $$userTableHeader.appendChild(tmpHeaderLowWrapper);
-                    tmpBody.forEach(child => {
-                        $$userTableBody.appendChild(child);
-                        });
-                    }
-                };
                 
             const $$leftArrow = document.querySelector("#left-arrow");
             $$leftArrow.addEventListener("click", () => {
-                window.history.back();
+                removeAllChildren($$userTableHeader);
+                removeAllChildren($$userTableBody);
+                requestUsers();
                 });
         });
 }
@@ -321,7 +311,8 @@ function goToEditUserScreen(companyName, fullName, position, email, ID){
         };
         
         const $$cancelChangeButton = document.querySelector(".cancel-button");
-        $$cancelChangeButton.addEventListener("click", () => {
+        $$cancelChangeButton.addEventListener("click", (event) => {
+            event.preventDefault();
             window.history.back();
             });
         });
